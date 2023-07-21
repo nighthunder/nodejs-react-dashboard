@@ -1,9 +1,8 @@
 import React, { useEffect, useState, ChangeEvent, FormEvent } from 'react';
 import { CircularProgress, TextField, FormControl, InputLabel, Select, MenuItem, Stack, Button } from '@mui/material';
-import UserTypeList from '../UserTypeList/UserTypeList';
+import ListUsersTypes from '../ListUsersTypes/ListUsersTypes';
 import '../../styles.css';
 import './styles.css';
-
 
 interface ProfessionalType {
     id: number;
@@ -136,7 +135,7 @@ const Form: React.FC = () => {
             <CircularProgress />
           </div>
         ) : (
-          <UserTypeList reloadKey={reloadKey}></UserTypeList>
+          <ListUsersTypes reloadKey={reloadKey}></ListUsersTypes>
         )}
         
     </>
