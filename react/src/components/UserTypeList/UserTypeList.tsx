@@ -2,19 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TablePagination } from '@mui/material';
 import '../../styles.css';
 import './styles.css';
+import  { UserType } from "../../types/UserType";
+import  { ChildProps } from "../../types/ChildProps";
+import api from '../../services/api';
 
-interface Type {
-    id: number;
-    description: string;
-    situation: string;
-
-}
-interface ChildProps {
-    reloadKey: number;
-}
-  
-const ProfessionalTypeList: React.FC<ChildProps> = ({ reloadKey }) => {
-  const [type, setPeople] = useState<Type[]>([]);
+const UserTypeList: React.FC<ChildProps> = ({ reloadKey }) => {
+  const [type, setType] = useState<UserType[]>([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -25,9 +18,13 @@ const ProfessionalTypeList: React.FC<ChildProps> = ({ reloadKey }) => {
 
   const fetchType = async () => {
     try {
-      const response = await fetch('http://localhost:5000/type');
-      const data = await response.json();
-      setPeople(data);
+      await api.get('/types').then(response => {
+        console.log(response.data);
+        const data = response.data;
+        setType(data); 
+      }).catch(error => {
+        console.error(error);
+      });
     } catch (error) {
       console.error('Error fetching type:', error);
     }
@@ -51,8 +48,8 @@ const ProfessionalTypeList: React.FC<ChildProps> = ({ reloadKey }) => {
           <TableHead>
             <TableRow>
                 <TableCell>ID:</TableCell>
-                <TableCell>Descrição:</TableCell>
-                <TableCell>Situação:</TableCell>
+                <TableCell>Description:</TableCell>
+                <TableCell>Situation:</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -79,4 +76,4 @@ const ProfessionalTypeList: React.FC<ChildProps> = ({ reloadKey }) => {
   );
 };
 
-export default ProfessionalTypeList;
+export default UserTypeList;

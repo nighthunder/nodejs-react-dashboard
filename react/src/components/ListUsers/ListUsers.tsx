@@ -2,39 +2,18 @@ import React, { useEffect, useState } from 'react';
 import { MenuItem, FormControl, InputLabel, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TablePagination } from '@mui/material';
 import '../../styles.css';
 import './styles.css';
-import ProfessionalType from '../../types/ProfessionalType';
+import api from '../../services/api';
+import  { User } from "../../types/User";
+import  { UserType } from "../../types/UserType";
+import  { UserWithType } from "../../types/UserWithType";
+import  { ChildProps } from "../../types/ChildProps";
 
-interface Person {
-    id: number ;
-    name: string;
-    situation: string;
-    phone: string;
-    type: number;
-    email: string;
-}
-interface ChildProps {
-    reloadKey: number;
-}
-
-interface Type {
-  id: number;
-  description: string;
-  situation: string;
-
-}
-
-interface PersonProfessionalType{
-  [key: string]: any;
-  id: number;
-  type: number;
-}
-  
-const PeopleList: React.FC<ChildProps> = ({ reloadKey }) => {
-  const [people, setPeople] = useState<Person[]>([]);
-  const [type, setType] = useState<Type[]>([]);
+const ListUsers: React.FC<ChildProps> = ({ reloadKey }) => {
+  const [users, setUsers] = useState<User[]>([]);
+  const [type, setType] = useState<UserType[]>([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [formData, setFormData] = useState<PersonProfessionalType>({
+  const [formData, setFormData] = useState<UserWithType>({
     id: 1,
     type: 1
   });
@@ -47,19 +26,28 @@ const PeopleList: React.FC<ChildProps> = ({ reloadKey }) => {
 
   const fetchPeople = async () => {
     try {
-      const response = await fetch('http://localhost:5000/user');
-      const data = await response.json();
-      setPeople(data);
+      await api.get('/users').then(response => {
+        console.log( "Users:"+ response.data);
+        const data = response.data
+        setUsers(data);
+      }).catch(error => {
+        console.error(error);
+      });
+      
     } catch (error) {
-      console.error('Error fetching people:', error);
+      console.error('Error fetching users:', error);
     }
   };
 
   const fetchType = async () => {
     try {
-      const response = await fetch('http://localhost:5000/type');
-      const data = await response.json();
-      setType(data);
+      await api.get('/types').then(response => {
+        console.log(response.data);
+        const data = response.data;
+        setType(data); 
+      }).catch(error => {
+        console.error(error);
+      });
     } catch (error) {
       console.error('Error fetching type:', error);
     }
@@ -103,7 +91,7 @@ const PeopleList: React.FC<ChildProps> = ({ reloadKey }) => {
       }
 
     } catch (error) {
-      console.error('Error fetching people:', error);
+      console.error('Error fetching users:', error);
     }
   };
 
@@ -116,7 +104,7 @@ const PeopleList: React.FC<ChildProps> = ({ reloadKey }) => {
     setPage(0);
   };
 
-  const paginatedPeople = people.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+  const paginatedPeople = users.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
   return (
     <>
@@ -125,18 +113,18 @@ const PeopleList: React.FC<ChildProps> = ({ reloadKey }) => {
           <TableHead>
             <TableRow>
                 <TableCell>ID:</TableCell>
-                <TableCell>Nome:</TableCell>
-                <TableCell>Telefone:</TableCell>
-                <TableCell>Tipo:</TableCell>
+                <TableCell>Name:</TableCell>
+                <TableCell>Phone:</TableCell>
+                <TableCell>Class:</TableCell>
                 <TableCell>Email:</TableCell>
-                <TableCell>Situação:</TableCell>
+                <TableCell>Situation:</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {paginatedPeople.map((person) => (
               <TableRow key={person.id}>
                 <TableCell>{person.id}</TableCell>
-                <TableCell>{person.name}</TableCell>
+                <TableCell>{person.firstname} {person.lastname}</TableCell>
                 <TableCell>{person.phone}</TableCell>
                 <TableCell>
                   <FormControl variant="outlined" sx={{ flex: '5' }}>
@@ -157,7 +145,7 @@ const PeopleList: React.FC<ChildProps> = ({ reloadKey }) => {
       <TablePagination
         component="div"
         rowsPerPageOptions={[5, 10, 25]}
-        count={people.length}
+        count={users.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
@@ -167,4 +155,4 @@ const PeopleList: React.FC<ChildProps> = ({ reloadKey }) => {
   );
 };
 
-export default PeopleList;
+export default ListUsers;

@@ -47,21 +47,21 @@ const Header: React.FC = () => {
           <MenuIcon />
         </IconButton>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          Dashboard de gerenciamento
+          Management dashboard
         </Typography>
         {isSmallScreen ? (
           <Box sx={{ display: 'none' }}>
-              <Link to="/add-profissional"><Button color="inherit">Gerenciar profissionais</Button></Link>
-              <Link to="/add-type"><Button color="inherit">Gerenciar tipos</Button></Link>
+              <Link to="/add-profissional"><Button color="inherit">Manage users</Button></Link>
+              <Link to="/add-type"><Button color="inherit">Manage classes</Button></Link>
               <Button color="inherit">About</Button>
               <Button color="inherit">Contact</Button>
           </Box>
         ) : (
           <Box sx={{ display: 'flex' }}>
-              <Link to="/add-professional"><Button color="inherit">Gerenciar profissionais</Button></Link>
-              <Link to="/add-type"><Button color="inherit">Gerenciar tipos</Button></Link>
-              <Button color="inherit">Configurações</Button>
-              <Button color="inherit">Sair</Button>
+              <Link to="/add-professional"><Button color="inherit">Manage users</Button></Link>
+              <Link to="/add-type"><Button color="inherit">Manage classes</Button></Link>
+              <Button color="inherit">Configuration</Button>
+              <Button color="inherit">Loggout</Button>
           </Box>
         )}
       </Toolbar>

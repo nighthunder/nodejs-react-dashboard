@@ -1,8 +1,9 @@
 import React, { useEffect, useState, ChangeEvent, FormEvent } from 'react';
 import { CircularProgress, TextField, FormControl, InputLabel, Select, MenuItem, Stack, Button } from '@mui/material';
-import ProfessionalTypeList from '../ProfessionalTypeList/ProfessionalTypeList';
+import UserTypeList from '../UserTypeList/UserTypeList';
 import '../../styles.css';
 import './styles.css';
+
 
 interface ProfessionalType {
     id: number;
@@ -102,7 +103,7 @@ const Form: React.FC = () => {
             variant="outlined"
             id="description" 
             name="description"
-            label="Descrição" 
+            label="Description" 
             value={formData.description}
             InputLabelProps={{ shrink: true }}
             sx={{ flex: '1' }}
@@ -110,14 +111,14 @@ const Form: React.FC = () => {
             }
             />
             <FormControl variant="outlined" sx={{ flex: '1' }}>
-            <InputLabel id="type-situation">Situação</InputLabel>
+            <InputLabel id="type-situation">Situation</InputLabel>
             <Select id="situation" name="situation" labelId="type-situation" label="Situation" onChange={(e) => handleChange(e)}>
                 <MenuItem key="ativo" value="ativo">1 - ativo</MenuItem>
                 <MenuItem key="inativo" value="inativo">2 - inativo</MenuItem>
             </Select>
             </FormControl>
             <Button type="submit" variant="contained" color="primary" size="large" sx={{ flex: '1' }}>
-            Adicionar
+            Add
             </Button>
         </Stack>
         </form>
@@ -135,7 +136,7 @@ const Form: React.FC = () => {
             <CircularProgress />
           </div>
         ) : (
-          <ProfessionalTypeList reloadKey={reloadKey}></ProfessionalTypeList>
+          <UserTypeList reloadKey={reloadKey}></UserTypeList>
         )}
         
     </>

@@ -1,8 +1,11 @@
 import React, { useEffect, useState, ChangeEvent, FormEvent } from 'react';
 import { CircularProgress, TextField, FormControl, InputLabel, Select, MenuItem, Stack, Button } from '@mui/material';
-import ProfessionalList from '../ProfessionalList/ProfessionalList';
+import ListUsers from '../ListUsers/ListUsers';
 import '../../styles.css';
 import './styles.css';
+import api from '../../services/api';
+import  { User } from "../../types/User";
+import  { UserWithType } from "../../types/UserWithType";
 
 interface ProfessionalType {
     id: number;
@@ -39,9 +42,14 @@ const Form: React.FC = () => {
 
   const fetchType = async () => {
     try {
-      const response = await fetch('http://localhost:5000/type');
-      const data = await response.json();
-      setType(data);
+      await api.get('/types').then(response => {
+        console.log(response.data);
+        const data = response.data;
+        setType(data); 
+      }).catch(error => {
+        console.error(error);
+      });
+      
     } catch (error) {
       console.error('Error fetching people:', error);
     }
@@ -126,14 +134,14 @@ const Form: React.FC = () => {
             variant="outlined"
             id="name" 
             name="name"
-            label="Nome completo" 
+            label="Full name" 
             value = {formData.name}
             InputLabelProps={{ shrink: true }}
             sx={{ flex: '1' }}
             onChange={(e) => handleChange(e)}
             />
             <FormControl variant="outlined" sx={{ flex: '1' }}>
-            <InputLabel id="type-label">Tipo de profissional</InputLabel>
+            <InputLabel id="type-label">User class:</InputLabel>
             <Select id="type" name="type" labelId="type-label" label="Type" onChange={(e) => handleChange(e)}>
                 {type.map((t) => (
                     <MenuItem key={t.id} value={t.id}>{t.id} - {t.description}</MenuItem>
@@ -144,7 +152,7 @@ const Form: React.FC = () => {
             variant="outlined"
             id="phone" 
             name="phone"
-            label="Telefone" 
+            label="Phone" 
             placeholder="(XX) XXXX-XXXX"
             value = {formData.phone}
             InputLabelProps={{ shrink: true }}
@@ -157,20 +165,20 @@ const Form: React.FC = () => {
             id="email" 
             name="email"
             value = {formData.email}
-            placeholder="meuemail@sirio.com.br"
+            placeholder="meuemail@domain.com.br"
             InputLabelProps={{ shrink: true }}
             sx={{ flex: '1' }}
             onChange={(e) => handleChange(e)}
             />
             <FormControl variant="outlined" sx={{ flex: '1' }}>
-            <InputLabel id="type-situation">Situação</InputLabel>
+            <InputLabel id="type-situation">Situation</InputLabel>
             <Select id="situation" name="situation" labelId="type-situation" label="Situation" onChange={(e) => handleChange(e)}>
                 <MenuItem key="ativo" value="ativo">1 - ativo</MenuItem>
                 <MenuItem key="inativo" value="inativo">2 - inativo</MenuItem>
             </Select>
             </FormControl>
             <Button type="submit" variant="contained" color="primary" size="large" sx={{ flex: '1' }}>
-            Adicionar
+            Add
             </Button>
         </Stack>
         </form>
@@ -188,7 +196,7 @@ const Form: React.FC = () => {
             <CircularProgress />
           </div>
         ) : (
-          <ProfessionalList reloadKey={reloadKey}></ProfessionalList>
+          <ListUsers reloadKey={reloadKey}></ListUsers>
         )}
     </>
   );

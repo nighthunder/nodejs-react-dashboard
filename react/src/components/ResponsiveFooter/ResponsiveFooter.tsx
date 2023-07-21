@@ -37,7 +37,7 @@ const Footer: React.FC = () => {
     <AppBar position="fixed" style={useStyles.footer}>
       <Toolbar>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          Sírio Libanês
+          Maya development
         </Typography>
         <IconButton
           edge="end"
