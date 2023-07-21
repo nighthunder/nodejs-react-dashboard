@@ -5,30 +5,18 @@ import '../../styles.css';
 import './styles.css';
 import api from '../../services/api';
 import  { User } from "../../types/User";
-import  { UserWithType } from "../../types/UserWithType";
-
-interface ProfessionalType {
-    id: number;
-    description: string;
-    situation: string;
-}
-
-interface Person {
-  id: number;
-  name: string;
-  email: string;
-  phone: string;
-  type: number | null;
-  situation: string ;
-}
+import  { UserType } from "../../types/UserType";
+import  { Situation } from "../../types/Situation";
 
 const Form: React.FC = () => {
   const [reloadKey, setReloadKey] = useState<number>(0);
-  const [type, setType] = useState<ProfessionalType[]>([]);
+  const [type, setType] = useState<UserType[]>([]);
+  const [situations, setSituations] = useState<Situation>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [formData, setFormData] = useState<Person>({
+  const [formData, setFormData] = useState<User>({
     id: 1,
-    name: '',
+    firstname: '',
+    lastname: '',
     email: '',
     phone: '',
     situation: '',
@@ -38,6 +26,7 @@ const Form: React.FC = () => {
 
   useEffect(() => {
     fetchType();
+    fetchSituations();
   }, []);
 
   const fetchType = async () => {
@@ -51,8 +40,24 @@ const Form: React.FC = () => {
       });
       
     } catch (error) {
-      console.error('Error fetching people:', error);
+      console.error('Error fetching types:', error);
     }
+  };
+
+  const fetchSituations = async () => {
+    try {
+      await api.get('/situations').then(response => {
+        console.log(response.data);
+        const data = response.data;
+        setSituations(data); 
+      }).catch(error => {
+        console.error(error);
+      });
+      
+    } catch (error) {
+      console.error('Error fetching situations:', error);
+    }
+
   };
 
   const handleChange = (e: any) => {
@@ -68,28 +73,32 @@ const Form: React.FC = () => {
 
     console.log("dados", formData)
 
-    const { name, email, phone, situation, type } = formData;
+    const { firstname, lastname, email, phone, situation, type } = formData;
     const newErrors: string[] = [];
     let gotError : boolean = false;
 
-    if (!name.trim()) {
-      newErrors.push('Nome é obrigatório.');
+    if (!firstname.trim()) {
+      newErrors.push('First name is mandatory.');
+      gotError = true;
+    }
+    if (!lastname.trim()) {
+      newErrors.push('Last name is mandatory.');
       gotError = true;
     }
     if (!email.trim()) {
-      newErrors.push('Email é obrigatório.');
+      newErrors.push('Email is mandatory.');
       gotError = true;
     }
     if (!phone.trim()) {
-      newErrors.push('Telefone é obrigatório.');
+      newErrors.push('Phone is mandatory.');
       gotError = true;
     }
-    if (!situation.trim()) {
-      newErrors.push('Situação é obrigatório.');
+    if (!(typeof situation === 'number')) {
+      newErrors.push('Situation is mandatory.');
       gotError = true;
     }
     if (!(typeof type === 'number')) {
-      newErrors.push('Tipo de profissional é obrigatório.');
+      newErrors.push('Professional type é obrigatório.');
       gotError = true;
     }
 
@@ -100,13 +109,28 @@ const Form: React.FC = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:5000/user', {
+      await api.post('/user', JSON.stringify(formData)).then(response => {
+        console.log(response.data);
+        const data = response.data;
+        //setUsers(data); 
+        
+        console.log('Form submitted successfully');
+        setIsLoading(true);
+        setReloadKey(prevKey => prevKey + 1);
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 1000); // 10 seconds
+      }).catch(error => {
+        console.error(error);
+      });
+      
+     /*  const response = await fetch('http://localhost:5000/user', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData),
-      });
+      }); 
 
       if (response.ok) {
         // Handle successful response
@@ -120,7 +144,7 @@ const Form: React.FC = () => {
       } else {
         // Handle error response
         console.error('Failed to submit form');
-      }
+      }*/
     } catch (error) {
       console.error('An error occurred', error);
     } 
@@ -132,10 +156,20 @@ const Form: React.FC = () => {
         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
             <TextField
             variant="outlined"
-            id="name" 
-            name="name"
-            label="Full name" 
-            value = {formData.name}
+            id="firstname" 
+            name="firstname"
+            label="First name" 
+            value = {formData.firstname}
+            InputLabelProps={{ shrink: true }}
+            sx={{ flex: '1' }}
+            onChange={(e) => handleChange(e)}
+            />
+            <TextField
+            variant="outlined"
+            id="lastname" 
+            name="lastname"
+            label="Last name" 
+            value = {formData.lastname}
             InputLabelProps={{ shrink: true }}
             sx={{ flex: '1' }}
             onChange={(e) => handleChange(e)}
@@ -173,8 +207,9 @@ const Form: React.FC = () => {
             <FormControl variant="outlined" sx={{ flex: '1' }}>
             <InputLabel id="type-situation">Situation</InputLabel>
             <Select id="situation" name="situation" labelId="type-situation" label="Situation" onChange={(e) => handleChange(e)}>
-                <MenuItem key="ativo" value="ativo">1 - ativo</MenuItem>
-                <MenuItem key="inativo" value="inativo">2 - inativo</MenuItem>
+                {situations?.map((situation: any) => (
+                  <MenuItem key={situation.id} value={situation.id}>{situation.id} - {situation.description}&nbsp;</MenuItem>
+                ))}
             </Select>
             </FormControl>
             <Button type="submit" variant="contained" color="primary" size="large" sx={{ flex: '1' }}>

@@ -58,7 +58,7 @@ const Header: React.FC = () => {
           </Box>
         ) : (
           <Box sx={{ display: 'flex' }}>
-              <Link to="/add-professional"><Button color="inherit">Manage users</Button></Link>
+              <Link to="/add-user"><Button color="inherit">Manage users</Button></Link>
               <Link to="/add-type"><Button color="inherit">Manage classes</Button></Link>
               <Button color="inherit">Configuration</Button>
               <Button color="inherit">Loggout</Button>
@@ -71,19 +71,19 @@ const Header: React.FC = () => {
             <ListItemIcon>
               <HomeIcon fontSize="small" />
             </ListItemIcon>
-            <Typography variant="inherit">Home</Typography>
+            <Link to="/add-user"><Button color="inherit">Manage users</Button></Link>
           </MenuItem>
           <MenuItem>
             <ListItemIcon>
               <InfoIcon fontSize="small" />
             </ListItemIcon>
-            <Typography variant="inherit">About</Typography>
+            <Link to="/add-type"><Button color="inherit">Manage classes</Button></Link>
           </MenuItem>
           <MenuItem>
             <ListItemIcon>
               <ContactMailIcon fontSize="small" />
             </ListItemIcon>
-            <Typography variant="inherit">Sair</Typography>
+            <Typography variant="inherit">Loggout</Typography>
           </MenuItem>
         </Menu>
       )}

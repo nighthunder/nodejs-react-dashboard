@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom'
 import { AppBar, Toolbar, Typography, IconButton, Drawer, List, ListItem, ListItemText } from '@mui/material';
 import { Menu as MenuIcon } from '@mui/icons-material';
 import './styles.css';
@@ -57,17 +58,12 @@ const Footer: React.FC = () => {
           >
             <List>
               <ListItem button>
-                <ListItemText primary="Home" />
+                <Link to="/add-user"><ListItemText primary="Manage users" /></Link>
               </ListItem>
               <ListItem button>
-                <ListItemText primary="About" />
+                <Link to="/add-type"><ListItemText primary="Manage classes" /></Link>
               </ListItem>
-              <ListItem button>
-                <ListItemText primary="Services" />
-              </ListItem>
-              <ListItem button>
-                <ListItemText primary="Contact" />
-              </ListItem>
+              
             </List>
           </div>
         </Drawer>

@@ -25,7 +25,7 @@ tr:hover{
     box-shadow: 1px 1px 1px solid #000;
 }
 
-a:active, a:visited, a:link{
+a, a:active, a:visited, a:link{
     color: #fff;
 }
 

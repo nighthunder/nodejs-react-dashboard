@@ -1,8 +1,14 @@
 const express = require('express');
 const cors = require('cors');
+const bodyParser = require('body-parser');
 const app = express();
 const port = 3000;
 app.use(cors({origin: '*'}));
+// Parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }));
+
+// Parse application/json
+app.use(bodyParser.json());
 //const con = require('./config/connection');
 const con = require('./config/connection');
 
@@ -31,17 +37,17 @@ app.get('/user', (req, res) => {
 
 app.post('/user', (req, res) => {
 
-  const type = req.query.type;
-  const email = req.query.email;
-  const first_name = req.query.firstname;
-  const last_name = req.query.lastname;
-  const birthday = req.query.birthday;
-  const phone = req.query.phone;
+  const type = req.body.type;
+  const situation = req.body.situation;
+  const first_name = req.body.firstname;
+  const last_name = req.body.lastname;
+  const email = req.body.email;
+  const passwd = "123456";
+  const phone = req.body.phone;
   const updated_at = new Date();
   const created_at = new Date();
-  const passwd = "123456";
 
-  con.query("INSERT into users(firstname, lastname, email, type, phone, passwd, birthday, created_at, updated_at ) values(?,?,?,?,?,?,?,?,?);", [ first_name, last_name, type, birthday, email, phone, passwd, created_at, updated_at  ], function (err, result, fields) {
+  con.query("INSERT into user(type, situation, firstname, lastname, email, passwd, phone, created_at, updated_at ) values(?,?,?,?,?,?,?,?,?);", [ type, situation, first_name, last_name, email, passwd, phone, created_at, updated_at  ], function (err, result, fields) {
     if (err) throw err;
     res.send(result);
     console.log("Worked out saving a new user.");
@@ -65,11 +71,12 @@ app.get('/types', (req, res) => {
 });
 
 app.post('/type', (req, res) => {
-  const description = req.query.description;
+  const description = req.body.description;
+  const situation = req.body.situation;
   const updated_at = new Date();
   const created_at = new Date();
 
-  con.query("INSERT into user_type(description, created_at, updated_at ) values(?,?,?);", [ description, created_at, updated_at  ], function (err, result, fields) {
+  con.query("INSERT into user_type(description, situation, created_at, updated_at ) values(?,?,?,?);", [ description, situation, created_at, updated_at  ], function (err, result, fields) {
     if (err) throw err;
     res.send(result);
     console.log("Worked out saving a new type.");
