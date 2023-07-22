@@ -18,7 +18,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/users', (req, res) => {
-  con.query("SELECT id, type, ( Select description from situation as s where s.id = u.situation) as situation, firstname, lastname, email, phone, created_at, updated_at from user as u", function (err, result, fields) {
+  con.query("SELECT id, type, situation, firstname, lastname, email, phone, created_at, updated_at from user as u", function (err, result, fields) {
     if (err) throw err;
     console.log("users", result);
     res.send(result);
@@ -58,7 +58,6 @@ app.get('/situations', (req, res) => {
   con.query("SELECT * FROM situation", function (err, result, fields) {
     if (err) throw err;
     res.send(result);
-    console.log("Worked out retrieving all types!!");
   });
 });
 
@@ -105,6 +104,19 @@ app.post('/usertype', (req, res) => {
     if (err) throw err;
     res.send(result);
     console.log("Worked out changing user type.");
+  });
+});
+
+app.post('/usersituation', (req, res) => {
+
+  const user_id = req.body.id;
+  const situation = req.body.situation;
+  const updated_at = new Date();
+  console.log("updated_at", updated_at);
+
+  con.query("Update user set situation = ? where id = ?", [ situation, user_id ], function (err, result, fields) {
+    if (err) throw err;
+    res.send(result);
   });
 });
 

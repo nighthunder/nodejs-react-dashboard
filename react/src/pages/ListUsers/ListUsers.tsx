@@ -5,20 +5,24 @@ import './styles.css';
 import api from '../../services/api';
 import  { User } from "../../types/User";
 import  { UserType } from "../../types/UserType";
+import  { Situation } from "../../types/Situation";
 import  { UserWithType } from "../../types/UserWithType";
+import  { UserWithSituation } from "../../types/UserWithSituation";
 import  { ChildProps } from "../../types/ChildProps";
 
 const ListUsers: React.FC<ChildProps> = ({ reloadKey }) => {
   const [users, setUsers] = useState<User[]>([]);
   const [type, setType] = useState<UserType[]>([]);
+  const [situations, setSituations] = useState<Situation[]>([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [formData, setFormData] = useState<UserWithType>({
-  });
+  const [formData, setFormData] = useState<UserWithType>({});
+  const [formData2, setFormData2] = useState<UserWithSituation>({});
 
   useEffect(() => {
     fetchPeople();
     fetchType();
+    fetchSituations();
     console.log("it fetched again");
   }, [reloadKey]);
 
@@ -40,7 +44,7 @@ const ListUsers: React.FC<ChildProps> = ({ reloadKey }) => {
   const fetchType = async () => {
     try {
       await api.get('/types').then(response => {
-        console.log(response.data);
+        //console.log(response.data);
         const data = response.data;
         setType(data); 
       }).catch(error => {
@@ -48,6 +52,20 @@ const ListUsers: React.FC<ChildProps> = ({ reloadKey }) => {
       });
     } catch (error) {
       console.error('Error fetching type:', error);
+    }
+  };
+
+  const fetchSituations = async () => {
+    try {
+      await api.get('/situations').then(response => {
+        //console.log("Shituations",response.data);
+        const data = response.data;
+        setSituations(data); 
+      }).catch(error => {
+        console.error(error);
+      });
+    } catch (error) {
+      console.error('Error fetching situations:', error);
     }
   };
 
@@ -68,7 +86,7 @@ const ListUsers: React.FC<ChildProps> = ({ reloadKey }) => {
       [name]: value,
       ["id"]: person_id
     }));
-    console.log(`form data: name: ${name} and value: ${value}` );
+    //console.log(`form data: name: ${name} and value: ${value}` );
 
     const params = {
       "id": person_id,
@@ -77,11 +95,42 @@ const ListUsers: React.FC<ChildProps> = ({ reloadKey }) => {
 
     try {
 
-      console.log("user and type change:", JSON.stringify(params));
+      //console.log("user and type change:", JSON.stringify(params));
       await api.post('/usertype', JSON.stringify(params)).then(response => {
         console.log(response.data);
         const data = response.data;
-        console.log("Correctly submitted!");
+        console.log("Correctly submitted user and type change!");
+      }).catch(error => {
+        console.error(error);
+      });
+
+    } catch (error) {
+      console.error('Error fetching users:', error);
+    }
+  };
+
+  const handleSelectSituationsChange = async (e: any, person_id: number) => {
+    const { name, value } = e.target;
+
+    setFormData2((prevFormData: any) => ({
+      ...prevFormData,
+      [name]: value,
+      ["id"]: person_id
+    }));
+    console.log(`form data: field name: ${name} and value: ${value}` );
+
+    const params = {
+      "id": person_id,
+      "situation": value
+    }
+
+    try {
+
+      console.log("user and type change:", JSON.stringify(params));
+      await api.post('/usersituation', JSON.stringify(params)).then(response => {
+        console.log(response.data);
+        const data = response.data;
+        console.log("Correctly submitted user and situation change!");
       }).catch(error => {
         console.error(error);
       });
@@ -124,7 +173,7 @@ const ListUsers: React.FC<ChildProps> = ({ reloadKey }) => {
                 <TableCell>{person.phone}</TableCell>
                 <TableCell>
                   <FormControl variant="outlined" sx={{ flex: '5' }}>
-                    <Select id="type" name="type" labelId="type" label="Tipo" value = {formData!["id"] === person.id ? formData!["type"]: person.type } onChange={(e) => handleSelectChange(e, person.id)}>
+                    <Select id="type" name="type" labelId="type" label="Class" value = {formData!["id"] === person.id ? formData!["type"]: person.type } onChange={(e) => handleSelectChange(e, person.id)}>
                       {type.map((t) => (
                         <MenuItem key={t.id} value={t.id}>{t.description}</MenuItem>
                       ))}
@@ -132,7 +181,13 @@ const ListUsers: React.FC<ChildProps> = ({ reloadKey }) => {
                   </FormControl>
                 </TableCell>
                 <TableCell>{person.email}</TableCell>
-                <TableCell>{person.situation}</TableCell>
+                <TableCell>
+                  <Select id="situation" name="situation" labelId="situation" label="Situation" value = {formData2!["id"] === person.id ? formData2!["situation"]: person.situation } onChange={(e) => handleSelectSituationsChange(e, person.id)}>
+                    {situations.map((t) => (
+                      <MenuItem key={t.id} value={t.id}>{t.description}</MenuItem>
+                    ))}
+                  </Select>
+                </TableCell>
                 <TableCell>{person.created_at}</TableCell>
                 <TableCell>{person.updated_at}</TableCell>
               </TableRow>
