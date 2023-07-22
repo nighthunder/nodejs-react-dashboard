@@ -14,14 +14,12 @@ const ListUsers: React.FC<ChildProps> = ({ reloadKey }) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [formData, setFormData] = useState<UserWithType>({
-    id: 1,
-    type: 1
   });
 
   useEffect(() => {
     fetchPeople();
     fetchType();
-    console.log("it fetched again")
+    console.log("it fetched again");
   }, [reloadKey]);
 
   const fetchPeople = async () => {
@@ -55,7 +53,7 @@ const ListUsers: React.FC<ChildProps> = ({ reloadKey }) => {
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
-    setFormData((prevFormData) => ({
+    setFormData((prevFormData: any) => ({
       ...prevFormData,
       [name]: value,
     }));
@@ -65,12 +63,12 @@ const ListUsers: React.FC<ChildProps> = ({ reloadKey }) => {
   const handleSelectChange = async (e: any, person_id: number) => {
     const { name, value } = e.target;
 
-    setFormData((prevFormData) => ({
+    setFormData((prevFormData: any) => ({
       ...prevFormData,
       [name]: value,
       ["id"]: person_id
     }));
-    console.log("form data", formData);
+    console.log(`form data: name: ${name} and value: ${value}` );
 
     const params = {
       "id": person_id,
@@ -78,17 +76,15 @@ const ListUsers: React.FC<ChildProps> = ({ reloadKey }) => {
     }
 
     try {
-      const response = await fetch('http://localhost:5000/update_professional_type', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(params),
-      });
 
-      if (response.ok) {
+      console.log("user and type change:", JSON.stringify(params));
+      await api.post('/usertype', JSON.stringify(params)).then(response => {
+        console.log(response.data);
+        const data = response.data;
         console.log("Correctly submitted!");
-      }
+      }).catch(error => {
+        console.error(error);
+      });
 
     } catch (error) {
       console.error('Error fetching users:', error);
@@ -112,31 +108,33 @@ const ListUsers: React.FC<ChildProps> = ({ reloadKey }) => {
         <Table>
           <TableHead>
             <TableRow>
-                <TableCell>ID:</TableCell>
                 <TableCell>Name:</TableCell>
                 <TableCell>Phone:</TableCell>
                 <TableCell>Class:</TableCell>
                 <TableCell>Email:</TableCell>
                 <TableCell>Situation:</TableCell>
+                <TableCell>Creation date:</TableCell>
+                <TableCell>Update date:</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {paginatedPeople.map((person) => (
               <TableRow key={person.id}>
-                <TableCell>{person.id}</TableCell>
                 <TableCell>{person.firstname} {person.lastname}</TableCell>
                 <TableCell>{person.phone}</TableCell>
                 <TableCell>
                   <FormControl variant="outlined" sx={{ flex: '5' }}>
-                    <Select id="type" name="type" labelId="type" label="Tipo" value = {formData["id"] === person.id ? formData["type"]: person.type } onChange={(e) => handleSelectChange(e, person.id)}>
+                    <Select id="type" name="type" labelId="type" label="Tipo" value = {formData!["id"] === person.id ? formData!["type"]: person.type } onChange={(e) => handleSelectChange(e, person.id)}>
                       {type.map((t) => (
-                        <MenuItem key={t.id} value={t.id}>{t.id}</MenuItem>
+                        <MenuItem key={t.id} value={t.id}>{t.description}</MenuItem>
                       ))}
                     </Select>
                   </FormControl>
                 </TableCell>
                 <TableCell>{person.email}</TableCell>
                 <TableCell>{person.situation}</TableCell>
+                <TableCell>{person.created_at}</TableCell>
+                <TableCell>{person.updated_at}</TableCell>
               </TableRow>
             ))}
           </TableBody>

@@ -20,7 +20,7 @@ const Form: React.FC = () => {
     email: '',
     phone: '',
     situation: '',
-    type: null
+    type: null,
   });
   const [errors, setErrors] = useState<string[]>([]);
 
@@ -32,7 +32,7 @@ const Form: React.FC = () => {
   const fetchType = async () => {
     try {
       await api.get('/types').then(response => {
-        console.log(response.data);
+        //console.log(response.data);
         const data = response.data;
         setType(data); 
       }).catch(error => {
@@ -47,7 +47,7 @@ const Form: React.FC = () => {
   const fetchSituations = async () => {
     try {
       await api.get('/situations').then(response => {
-        console.log(response.data);
+        //console.log(response.data);
         const data = response.data;
         setSituations(data); 
       }).catch(error => {
@@ -98,7 +98,7 @@ const Form: React.FC = () => {
       gotError = true;
     }
     if (!(typeof type === 'number')) {
-      newErrors.push('Professional type é obrigatório.');
+      newErrors.push('Professional type is mandatory.');
       gotError = true;
     }
 
@@ -114,7 +114,7 @@ const Form: React.FC = () => {
         const data = response.data;
         //setUsers(data); 
         
-        console.log('Form submitted successfully');
+        //console.log('Form submitted successfully');
         setIsLoading(true);
         setReloadKey(prevKey => prevKey + 1);
         setTimeout(() => {
@@ -124,27 +124,6 @@ const Form: React.FC = () => {
         console.error(error);
       });
       
-     /*  const response = await fetch('http://localhost:5000/user', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      }); 
-
-      if (response.ok) {
-        // Handle successful response
-        console.log('Form submitted successfully');
-        setIsLoading(true);
-        setReloadKey(prevKey => prevKey + 1);
-        setTimeout(() => {
-          setIsLoading(false);
-        }, 1000); // 10 seconds
-
-      } else {
-        // Handle error response
-        console.error('Failed to submit form');
-      }*/
     } catch (error) {
       console.error('An error occurred', error);
     } 
@@ -178,7 +157,7 @@ const Form: React.FC = () => {
             <InputLabel id="type-label">User class:</InputLabel>
             <Select id="type" name="type" labelId="type-label" label="Type" onChange={(e) => handleChange(e)}>
                 {type.map((t) => (
-                    <MenuItem key={t.id} value={t.id}>{t.id} - {t.description}</MenuItem>
+                    <MenuItem key={t.id} value={t.id}>{t.description}</MenuItem>
                 ))}
                 </Select>
             </FormControl>
@@ -208,7 +187,7 @@ const Form: React.FC = () => {
             <InputLabel id="type-situation">Situation</InputLabel>
             <Select id="situation" name="situation" labelId="type-situation" label="Situation" onChange={(e) => handleChange(e)}>
                 {situations?.map((situation: any) => (
-                  <MenuItem key={situation.id} value={situation.id}>{situation.id} - {situation.description}&nbsp;</MenuItem>
+                  <MenuItem key={situation.id} value={situation.id}>{situation.description}&nbsp;</MenuItem>
                 ))}
             </Select>
             </FormControl>

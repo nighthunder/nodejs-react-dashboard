@@ -130,7 +130,7 @@ const Form: React.FC = () => {
             <InputLabel id="type-situation">Situation</InputLabel>
             <Select id="situation" name="situation" labelId="type-situation" label="Situation" onChange={(e) => handleChange(e)}>
               {situations?.map((situation: any) => (
-                <MenuItem key={situation.id} value={situation.id}>{situation.id} - {situation.description}&nbsp;</MenuItem>
+                <MenuItem key={situation.id} value={situation.id}>{situation.description}&nbsp;</MenuItem>
               ))}
             </Select>
             </FormControl>

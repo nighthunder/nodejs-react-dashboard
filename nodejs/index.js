@@ -18,10 +18,10 @@ app.get('/', (req, res) => {
 });
 
 app.get('/users', (req, res) => {
-  con.query("SELECT * FROM user ORDER BY firstname ASC", function (err, result, fields) {
+  con.query("SELECT id, type, ( Select description from situation as s where s.id = u.situation) as situation, firstname, lastname, email, phone, created_at, updated_at from user as u", function (err, result, fields) {
     if (err) throw err;
+    console.log("users", result);
     res.send(result);
-    console.log("Worked out retrieving users!!");
   });
 });
 
@@ -91,6 +91,20 @@ app.get('/type', (req, res) => {
     if (err) throw err;
     res.send(result);
     console.log("Worked out retrieving a specific type.");
+  });
+});
+
+app.post('/usertype', (req, res) => {
+
+  const user_id = req.body.id;
+  const type = req.body.type;
+  const updated_at = new Date();
+  console.log("updated_at", updated_at);
+
+  con.query("Update user set type = ? where id = ?", [ type, user_id ], function (err, result, fields) {
+    if (err) throw err;
+    res.send(result);
+    console.log("Worked out changing user type.");
   });
 });
 

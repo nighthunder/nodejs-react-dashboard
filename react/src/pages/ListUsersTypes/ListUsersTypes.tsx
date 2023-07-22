@@ -47,17 +47,19 @@ const UserTypeList: React.FC<ChildProps> = ({ reloadKey }) => {
         <Table>
           <TableHead>
             <TableRow>
-                <TableCell>ID:</TableCell>
                 <TableCell>Description:</TableCell>
                 <TableCell>Situation:</TableCell>
+                <TableCell>Creation date:</TableCell>
+                <TableCell>Update date:</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {paginatedPeople.map((type) => (
               <TableRow key={type.id}>
-                <TableCell>{type.id}</TableCell>
                 <TableCell>{type.description}</TableCell>
                 <TableCell>{type.situation}</TableCell>
+                <TableCell>{type.created_at}</TableCell>
+                <TableCell>{type.updated_at}</TableCell>
               </TableRow>
             ))}
           </TableBody>
