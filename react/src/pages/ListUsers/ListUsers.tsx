@@ -157,11 +157,11 @@ const ListUsers: React.FC<ChildProps> = ({ reloadKey }) => {
         <Table>
           <TableHead>
             <TableRow>
-                <TableCell>Name:</TableCell>
+                <TableCell>Fullname:</TableCell>
                 <TableCell>Phone:</TableCell>
                 <TableCell>Class:</TableCell>
                 <TableCell>Email:</TableCell>
-                <TableCell>Situation:</TableCell>
+                <TableCell>Status:</TableCell>
                 <TableCell>Creation date:</TableCell>
                 <TableCell>Update date:</TableCell>
             </TableRow>

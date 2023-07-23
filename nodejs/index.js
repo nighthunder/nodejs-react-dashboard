@@ -20,7 +20,7 @@ app.get('/', (req, res) => {
 app.get('/users', (req, res) => {
   con.query("SELECT id, type, situation, firstname, lastname, email, phone, created_at, updated_at from user as u", function (err, result, fields) {
     if (err) throw err;
-    console.log("users", result);
+    //console.log("users", result);
     res.send(result);
   });
 });
@@ -97,10 +97,10 @@ app.post('/usertype', (req, res) => {
 
   const user_id = req.body.id;
   const type = req.body.type;
-  const updated_at = new Date();
+  //const updated_at = new Date();
   console.log("updated_at", updated_at);
 
-  con.query("Update user set type = ? where id = ?", [ type, user_id ], function (err, result, fields) {
+  con.query("Update user set type = ? and updated_at = NOW() where id = ?", [ type, user_id ], function (err, result, fields) {
     if (err) throw err;
     res.send(result);
     console.log("Worked out changing user type.");
@@ -117,6 +117,20 @@ app.post('/usersituation', (req, res) => {
   con.query("Update user set situation = ? where id = ?", [ situation, user_id ], function (err, result, fields) {
     if (err) throw err;
     res.send(result);
+  });
+});
+
+app.post('/typesituation', (req, res) => {
+
+  const type = req.body.id;
+  const situation = req.body.situation;
+  const updated_at = new Date();
+  console.log("updated_at", updated_at);
+
+  con.query("Update user_type set situation = ? where id = ?", [ situation, type ], function (err, result, fields) {
+    if (err) throw err;
+    res.send(result);
+    console.log("Worked out changing user type.");
   });
 });
 
