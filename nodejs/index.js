@@ -61,6 +61,20 @@ app.get('/situations', (req, res) => {
   });
 });
 
+app.post('/situation', (req, res) => {
+
+  const description = req.body.description;
+  const updated_at = new Date();
+  const created_at = new Date();
+
+  con.query("INSERT into situation(description, created_at, updated_at ) values(?,?,?);", [ description , created_at, updated_at  ], function (err, result, fields) {
+    if (err) throw err;
+    res.send(result);
+    console.log("Worked out saving a new description.");
+  });
+});
+
+
 app.get('/types', (req, res) => {
   con.query("SELECT * FROM user_type", function (err, result, fields) {
     if (err) throw err;

@@ -72,7 +72,7 @@ const Form: React.FC = () => {
     let gotError : boolean = false;
 
     if (!description.trim()) {
-      newErrors.push('A descrição é obrigatória.');
+      newErrors.push('Description is mandatory.');
       gotError = true;
     }
 

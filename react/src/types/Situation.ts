@@ -1,5 +1,5 @@
 export interface Situation{
     [index: string]: any;
-    id: number;
+    id?: number;
     description?: string;
 }

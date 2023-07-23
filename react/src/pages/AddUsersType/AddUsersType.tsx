@@ -1,6 +1,6 @@
 import * as React from 'react';
 import ResponsiveHeader from '../../components/ResponsiveHeader/ResponsiveHeader';
-import AddUsersTypeForm from '../AddUsersTypeForm/AddUsersTypeForm';
+import AddUsersTypeForm from '../../components/AddUsersTypeForm/AddUsersTypeForm';
 import ResponsiveFooter from '../../components/ResponsiveFooter/ResponsiveFooter';
 import './styles.css';
 function AddUserType() {
