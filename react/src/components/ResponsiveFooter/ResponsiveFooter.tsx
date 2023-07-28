@@ -63,6 +63,12 @@ const Footer: React.FC = () => {
               <ListItem button>
                 <Link to="/add-type"><ListItemText primary="Manage classes" /></Link>
               </ListItem>
+              <ListItem button>
+                <Link to="/add-situation"><ListItemText primary="Manage status" /></Link>
+              </ListItem>
+              <ListItem button>
+                <Link to="/loggout"><ListItemText primary="Loggout" /></Link>
+              </ListItem>
               
             </List>
           </div>

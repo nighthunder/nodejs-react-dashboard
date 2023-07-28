@@ -21,6 +21,20 @@ tr{
     cursor: pointer;
 }
 
+h2{
+    color: #074c91;
+    font-family: inherit;
+    margin: 0;
+    margin-top: 0px;
+    margin-top: 0px;
+    font-family: "Roboto","Helvetica","Arial",sans-serif;
+    font-weight: 600;
+    line-height: 1.6;
+    letter-spacing: 0.0075em;
+    -webkit-box-flex: 1;
+    margin-top: 25px;
+}
+
 tr:hover{
     box-shadow: 1px 1px 1px solid #000;
 }
@@ -36,4 +50,9 @@ a, a:active, a:visited, a:link{
     line-height: 1.6;
     letter-spacing: 0.0075em;
     -webkit-box-flex: 1;
+}
+
+.css-1juivf6-MuiTypography-root{
+    font-size: 1.65em !important;
+    font-weight: bold !important;
 }
