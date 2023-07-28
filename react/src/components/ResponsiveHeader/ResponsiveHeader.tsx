@@ -54,8 +54,8 @@ const Header: React.FC = () => {
               <Link to="/add-profissional"><Button color="inherit">Manage users</Button></Link>
               <Link to="/add-type"><Button color="inherit">Manage classes</Button></Link>
               <Link to="/add-situation"><Button color="inherit">Manage status</Button></Link>
-              <Button color="inherit">About</Button>
-              <Button color="inherit">Contact</Button>
+              <Button color="inherit">Configuration</Button>
+              <Link to="/loggout"><Button color="inherit">Loggout</Button></Link>
           </Box>
         ) : (
           <Box sx={{ display: 'flex' }}>
@@ -63,7 +63,7 @@ const Header: React.FC = () => {
               <Link to="/add-type"><Button color="inherit">Manage classes</Button></Link>
               <Link to="/add-situation"><Button color="inherit">Manage status</Button></Link>
               <Button color="inherit">Configuration</Button>
-              <Button color="inherit">Loggout</Button>
+              <Link to="/loggout"><Button color="inherit">Loggout</Button></Link>
           </Box>
         )}
       </Toolbar>
